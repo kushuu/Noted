@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if(!sUsername.equals("") && !sPassword.equals("")) {
             Toast.makeText(this, "Logging user in...", Toast.LENGTH_SHORT).show();
+            usernameEditText.setText("");
+            passwordEditText.setText("");
             Intent i = new Intent(LoginActivity.this, MainNotesPageActivity.class);
             startActivity(i);
         }

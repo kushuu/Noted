@@ -95,7 +95,7 @@
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
-        android:backgroundTint="@color/login_reg_btn"
+        android:backgroundTint="@color/grey"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Sign In"

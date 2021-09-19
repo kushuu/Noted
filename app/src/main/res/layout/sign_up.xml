@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginBottom="64dp"
-        android:backgroundTint="@color/login_reg_btn"
+        android:backgroundTint="@color/grey"
         android:enabled="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
