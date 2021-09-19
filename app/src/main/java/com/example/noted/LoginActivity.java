@@ -30,10 +30,12 @@ public class LoginActivity extends AppCompatActivity {
         EditText usernameEditText = (EditText) findViewById(R.id.username);
 
         String sUsername = usernameEditText.getText().toString();
-        Log.d("this is the username: ",sUsername);
-
         String sPassword = passwordEditText.getText().toString();
-        Log.d("this is the password: ",sPassword);
 
+        if(!sUsername.equals("") && !sPassword.equals("")) {
+            Toast.makeText(this, "Logging user in...", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(LoginActivity.this, MainNotesPageActivity.class);
+            startActivity(i);
+        }
     }
 }
