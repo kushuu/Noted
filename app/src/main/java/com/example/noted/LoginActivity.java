@@ -26,19 +26,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void sign_in_user(View view) {
-//        EditText passwordEditText = (EditText) findViewById(R.id.password);
-//        EditText usernameEditText = (EditText) findViewById(R.id.username);
-//        String sUsername = usernameEditText.getText().toString();
-//        Log.d("this is the username: ",sUsername);
-//
-//        String sPassword = passwordEditText.getText().toString();
-//        Log.d("this is the password: ",sPassword);
-//        EditText etUserName = (EditText) findViewById(R.id.username);
-//        String strUserName = etUserName.getText().toString();
-//
-//        if(TextUtils.isEmpty(strUserName)) {
-//            Toast.makeText(this, "button clicked.", Toast.LENGTH_SHORT).show();
-//        }
-        Toast.makeText(this, "button clicked.", Toast.LENGTH_SHORT).show();
+        EditText passwordEditText = (EditText) findViewById(R.id.password);
+        EditText usernameEditText = (EditText) findViewById(R.id.username);
+
+        String sUsername = usernameEditText.getText().toString();
+        Log.d("this is the username: ",sUsername);
+
+        String sPassword = passwordEditText.getText().toString();
+        Log.d("this is the password: ",sPassword);
+
     }
 }

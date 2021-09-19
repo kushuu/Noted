@@ -96,7 +96,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/login_reg_btn"
-        android:enabled="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Sign In"
