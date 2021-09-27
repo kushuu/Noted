@@ -56,7 +56,7 @@
         android:backgroundTint="@color/grey"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="Sign In"
+        android:text="Sign Up"
         android:textColor="#FFFFFF"
         android:onClick="register_user"
         app:cornerRadius="5dp"
