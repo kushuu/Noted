@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -20,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login");
+
+
     }
 
     public void go_to_signup(View view) {
@@ -30,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     public void sign_in_user(View view) {
         EditText passwordEditText = (EditText) findViewById(R.id.password);
         EditText usernameEditText = (EditText) findViewById(R.id.username);
-//        ProgressBar pgsBar = (ProgressBar)findViewById(R.id.loading);
-//        pgsBar.setVisibility(view.GONE);
 
         String sUsername = usernameEditText.getText().toString();
         String sPassword = passwordEditText.getText().toString();
