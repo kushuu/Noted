@@ -6,4 +6,7 @@
     <string name="sign_up">"New user? <u>Sign up</u>"</string>
     <string name="login">"Already registered? <u>Login</u>"</string>
     <string name="prompt_password_confirm">Confirm Password</string>
+    <string name="title_activity_test">test</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
