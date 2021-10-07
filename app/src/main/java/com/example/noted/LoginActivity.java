@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             else {
                                 user.sendEmailVerification();
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, "Verification email has beem sent on your email address.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Verification email has been sent on your email address.", Toast.LENGTH_LONG).show();
                             }
                         }
                         else {
