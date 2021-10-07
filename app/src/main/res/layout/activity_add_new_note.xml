@@ -14,13 +14,13 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Noted."
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/note_string"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/textView"
+        android:id="@+id/note_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="180dp"
@@ -38,13 +38,13 @@
         android:id="@+id/add_note_img_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="92dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/black"
         android:backgroundTint="#F1D591"
         android:text="Add image"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/note_string" />
 
     <Button
         android:backgroundTint="@color/grey"
@@ -55,5 +55,5 @@
         android:layout_marginEnd="80dp"
         android:text="Add note"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/note_string" />
 </androidx.constraintlayout.widget.ConstraintLayout>
