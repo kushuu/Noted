@@ -58,6 +58,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null) {
+            startActivity(new Intent(LoginActivity.this, MainNotesPageActivity.class));
+            this.finish();
+        }
+    }
+
     private void login_user() {
         String email = emailEditText.getText().toString().trim();
         String password = passEditText.getText().toString().trim();
@@ -92,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 // redirect to user profile.
                                 progressBar.setVisibility(View.GONE);
                                 startActivity(new Intent(LoginActivity.this, MainNotesPageActivity.class));
+                                finish();
                             }
                             else {
                                 user.sendEmailVerification();
@@ -100,8 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Failed to log in. Please check your credentials", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this, "Failed to log in. Please check your credentials", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

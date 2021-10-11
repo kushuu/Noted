@@ -29,6 +29,9 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
     private Button logout, all_notes_btn, todo_btn, reminder_btn;
     private FloatingActionButton add_note_btn;
     private ListView allNotesListView;
+    private ArrayList<IndNote> all_notes;
+    private NotesAdapter notesAdapter;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +52,34 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         add_note_btn.setOnClickListener(this);
 
         // working on printing all the notes on screen from FirebaseDatabase.
-        final ArrayList<String> every_note = new ArrayList<>();
-        final ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.list_item, every_note);
-        allNotesListView.setAdapter(adapter);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Notes");
-        Toast.makeText(MainNotesPageActivity.this, "aaaaaaaahhhhhh", Toast.LENGTH_SHORT).show();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                every_note.clear();
-                for(DataSnapshot row : snapshot.getChildren()) {
-                    every_note.add(row.getValue().toString());
-                }
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
 
-            }
-        });
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                final ArrayList<String> every_note = new ArrayList<>();
+////                every_note.clear();
+//                for(DataSnapshot row : snapshot.getChildren()) {
+//                    every_note.add(row.child("note").getValue().toString());
+//                }
+//                System.out.println("************************************");
+//                System.out.println(every_note.get(1));
+//                System.out.println("************************************");
+//
+//                final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
+//                allNotesListView.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -78,6 +88,7 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
             case R.id.logout_btn:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MainNotesPageActivity.this, LoginActivity.class));
+                finish();
                 break;
             case R.id.add_new_note_btn:
                 startActivity(new Intent(MainNotesPageActivity.this, AddNewNote.class));

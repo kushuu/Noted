@@ -98,10 +98,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
 
                                         // redirect to the login page/main page.
+                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                        finish();
                                     }
                                     else {
                                         Toast.makeText(SignUpActivity.this, "Failed to register. Please try again!", Toast.LENGTH_SHORT).show();
