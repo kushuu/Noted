@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -24,15 +25,19 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +50,8 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
     Button add_note, add_img;
     EditText note_string_ET;
     ImageView imgSection;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -61,11 +68,16 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
         add_img = findViewById(R.id.add_note_img_btn);
         add_img.setOnClickListener(this);
 
+        // all the firebase related stuff.
         mAuth = FirebaseAuth.getInstance();
-        note_string_ET = (EditText) findViewById(R.id.note_string);
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("images");
         db = FirebaseDatabase.getInstance();
+
+        note_string_ET = (EditText) findViewById(R.id.note_string);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         imgSection = (ImageView) findViewById(R.id.add_note_temp_img);
+        imgSection.setDrawingCacheEnabled(true);
     }
 
     @Override
@@ -129,30 +141,67 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
                         Geocoder geocoder = new Geocoder(AddNewNote.this, Locale.getDefault());
                         List<Address> address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         String note_text = note_string_ET.getText().toString().trim();
+                        if(note_text.equals("")) {
+                            note_string_ET.setError("Note can't be empty!");
+                            note_string_ET.requestFocus();
+                            return;
+                        }
                         String userId = mAuth.getCurrentUser().getUid();
                         ref = db.getReference("users").child(userId).child("Notes");
 
                         String uid = mAuth.getCurrentUser().getUid();
                         String currentTime = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault()).format(new Date());
                         double latitude = address.get(0).getLatitude(), longitude = address.get(0).getLongitude();
+
                         IndNote noteObj = new IndNote(note_text, currentTime, uid, latitude, longitude);
                         noteObj.setUserName(uid);
                         noteObj.setLatitude(latitude);
                         noteObj.setLongitude(longitude);
 
-                        // saving note into the db.
-                        ref.child(currentTime).setValue(noteObj);
-                        Toast.makeText(AddNewNote.this, "Note added :)", Toast.LENGTH_SHORT).show();
+                        // dealing with image from here.
+                        ImageView img = findViewById(R.id.add_note_temp_img);
+                        Bitmap btImg = img.getDrawingCache();  // this variable stores the image.
+                        Integer image_uid = btImg.getGenerationId();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        btImg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+                        UploadTask uploadTask = storageReference.child(image_uid.toString()).putBytes(data);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                Toast.makeText(AddNewNote.this, "Failed to upload, kindly retry!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // working with image here.
+                                Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+                                while(!downloadUrl.isSuccessful());
+                                String imgUri = downloadUrl.getResult().toString();
+                                noteObj.setImageUri(imgUri);
 
-                        // resetting editText field and going back to all_notes page.
-                        note_string_ET.setText("");
-                        startActivity(new Intent(AddNewNote.this, MainNotesPageActivity.class));
-                        finish();
+                                // saving note into the db.
+                                ref.child(currentTime).setValue(noteObj);
+                                Toast.makeText(AddNewNote.this, "Note added :)", Toast.LENGTH_SHORT).show();
+
+                                // resetting editText field and going back to all_notes page.
+                                note_string_ET.setText("");
+                                startActivity(new Intent(AddNewNote.this, MainNotesPageActivity.class));
+                                finish();
+                            }
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
+    }
+
+    private void setImgUri(IndNote noteObj) {
+        // dealing with the image here.
+
     }
 }

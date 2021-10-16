@@ -1,7 +1,9 @@
 package com.example.noted;
 
+import android.net.Uri;
 import android.widget.ImageView;
 
+import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,10 +13,15 @@ public class IndNote {
     private  String userName;
     private ImageView note_img;
     private double latitude, longitude;
+    private String imageUri;
 
-    public double getLatitude() {
-        return latitude;
+    public String getImageUri() {
+        return imageUri;
     }
+
+    public void setImageUri(String imageUri) { this.imageUri = imageUri; }
+
+    public double getLatitude() { return latitude; }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
