@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -52,6 +53,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
     ImageView imgSection;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    ProgressBar progressBar;
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -74,6 +76,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
         storageReference = firebaseStorage.getReference("images");
         db = FirebaseDatabase.getInstance();
 
+        progressBar = findViewById(R.id.add_note_progress_bar);
         note_string_ET = (EditText) findViewById(R.id.note_string);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         imgSection = (ImageView) findViewById(R.id.add_note_temp_img);
@@ -158,6 +161,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
                         noteObj.setLatitude(latitude);
                         noteObj.setLongitude(longitude);
 
+                        progressBar.setVisibility(View.VISIBLE);
                         // dealing with image from here.
                         ImageView img = findViewById(R.id.add_note_temp_img);
                         Bitmap btImg = img.getDrawingCache();  // this variable stores the image.
@@ -170,6 +174,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
                             @Override
                             public void onFailure(@NonNull Exception exception) {
                                 // Handle unsuccessful uploads
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(AddNewNote.this, "Failed to upload, kindly retry!", Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -184,6 +189,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
 
                                 // saving note into the db.
                                 ref.child(currentTime).setValue(noteObj);
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(AddNewNote.this, "Note added :)", Toast.LENGTH_SHORT).show();
 
                                 // resetting editText field and going back to all_notes page.
