@@ -29,8 +29,7 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
     private Button logout, all_notes_btn, todo_btn, reminder_btn;
     private FloatingActionButton add_note_btn;
     private ListView allNotesListView;
-    private ArrayList<IndNote> all_notes;
-    private NotesAdapter notesAdapter;
+//    private ArrayList<IndNote> all_notes;
     private FirebaseAuth mAuth;
 
     @Override
@@ -79,12 +78,12 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                 view_all_notes();
                 break;
             case R.id.reminder_btn:
-                view_remin_notes();
+                view_reminder_notes();
                 break;
         }
     }
 
-    private void view_remin_notes() {
+    private void view_reminder_notes() {
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
 
