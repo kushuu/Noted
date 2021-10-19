@@ -58,30 +58,25 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
 
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                final ArrayList<String> every_note = new ArrayList<>();
-////                every_note.clear();
-//                for(DataSnapshot row : snapshot.getChildren()) {
-//                    every_note.add(row.child("note").getValue().toString());
-//                }
-//                System.out.println("************************************");
-//                System.out.println(every_note.get(1));
-//                System.out.println("************************************");
-//
-//                final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
-//                allNotesListView.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-    }
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final ArrayList<String> every_note = new ArrayList<>();
+                for(DataSnapshot row : snapshot.getChildren()) {
+                    every_note.add(row.child("note").getValue().toString());
+                }
+                final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
+                allNotesListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    
     @Override
     public void onClick(View view) {
         switch(view.getId()) {

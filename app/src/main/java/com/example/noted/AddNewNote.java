@@ -205,9 +205,4 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-
-    private void setImgUri(IndNote noteObj) {
-        // dealing with the image here.
-
-    }
 }
