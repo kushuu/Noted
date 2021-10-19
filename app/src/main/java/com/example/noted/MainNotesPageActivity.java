@@ -50,11 +50,93 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
 
         logout.setOnClickListener(this);
         add_note_btn.setOnClickListener(this);
+        todo_btn.setOnClickListener(this);
+        all_notes_btn.setOnClickListener(this);
+        reminder_btn.setOnClickListener(this);
 
         // working on printing all the notes on screen from FirebaseDatabase.
 
 
         mAuth = FirebaseAuth.getInstance();
+        view_all_notes();
+    }
+    
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.logout_btn:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainNotesPageActivity.this, LoginActivity.class));
+                finish();
+                break;
+            case R.id.add_new_note_btn:
+                startActivity(new Intent(MainNotesPageActivity.this, AddNewNote.class));
+                break;
+            case R.id.to_do_btn:
+                view_todo_notes();
+                break;
+            case R.id.all_notes_btn:
+                view_all_notes();
+                break;
+            case R.id.reminder_btn:
+                view_remin_notes();
+                break;
+        }
+    }
+
+    private void view_remin_notes() {
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final ArrayList<String> every_note = new ArrayList<>();
+                for(DataSnapshot row : snapshot.getChildren()) {
+                    String note = row.child("note").getValue().toString();
+                    if(note.startsWith("Reminder") || note.startsWith("reminder") || note.startsWith("Remind me to") || note.startsWith("remind me to")) {
+                        every_note.add(note);
+                    }
+                }
+                final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
+                allNotesListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void view_todo_notes() {
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final ArrayList<String> every_note = new ArrayList<>();
+                for(DataSnapshot row : snapshot.getChildren()) {
+                    String note = row.child("note").getValue().toString();
+                    if(!(note.startsWith("Reminder") || note.startsWith("reminder") || note.startsWith("Remind me to") || note.startsWith("remind me to"))) {
+                        every_note.add(note);
+                    }
+                }
+                final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
+                allNotesListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void view_all_notes() {
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
 
@@ -75,18 +157,5 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
 
             }
         });
-    }
-    
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.logout_btn:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainNotesPageActivity.this, LoginActivity.class));
-                finish();
-                break;
-            case R.id.add_new_note_btn:
-                startActivity(new Intent(MainNotesPageActivity.this, AddNewNote.class));
-        }
     }
 }
