@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 public class IndividualNotePage extends AppCompatActivity {
-    private TextView noteText;
+    private TextView noteText, latText, lonText, dtText;
     private ImageView noteImage;
 
 
@@ -28,10 +28,21 @@ public class IndividualNotePage extends AppCompatActivity {
 
         noteText = (TextView) findViewById(R.id.note_text);
         noteImage = (ImageView) findViewById(R.id.note_img);
+        latText = (TextView) findViewById(R.id.note_latitude);
+        lonText = (TextView) findViewById(R.id.note_longitude);
+        dtText = (TextView) findViewById(R.id.note_datetime);
 
         Intent receive_data = getIntent();
         String note = receive_data.getStringExtra("noteContent");
-        noteText.setText(note);
+        String latitude = receive_data.getStringExtra("latitude");
+        String longitude = receive_data.getStringExtra("longitude");
+        String date_time = receive_data.getStringExtra("date_time");
+
+        noteText.setText("Note: " + note);
+        latText.setText("Latitude: " + latitude);
+        lonText.setText("Longitude: " + longitude);
+        dtText.setText("Date added: " + date_time);
+        Toast.makeText(IndividualNotePage.this, latitude, Toast.LENGTH_SHORT).show();
 
         // working with image.
         String uri = receive_data.getStringExtra("imageUri");

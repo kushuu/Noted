@@ -153,7 +153,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
                         ref = db.getReference("users").child(userId).child("Notes");
 
                         String uid = mAuth.getCurrentUser().getUid();
-                        String currentTime = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault()).format(new Date());
+                        String currentTime = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
                         double latitude = address.get(0).getLatitude(), longitude = address.get(0).getLongitude();
 
                         IndNote noteObj = new IndNote(note_text, currentTime, uid, latitude, longitude);

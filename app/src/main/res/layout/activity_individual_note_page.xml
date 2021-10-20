@@ -20,17 +20,66 @@
         app:srcCompat="@drawable/edit_text_border" />
 
     <TextView
+        android:background="@drawable/edit_text_border"
+        android:id="@+id/note_latitude"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.377" />
+
+    <TextView
+        android:background="@drawable/edit_text_border"
         android:id="@+id/note_text"
         android:layout_width="345dp"
         android:layout_height="39dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        android:textAlignment="center"
         android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_img"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintVertical_bias="0.233" />
+
+    <TextView
+        android:background="@drawable/edit_text_border"
+        android:id="@+id/note_longitude"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.521" />
+
+    <TextView
+        android:background="@drawable/edit_text_border"
+        android:id="@+id/note_datetime"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.667" />
 </androidx.constraintlayout.widget.ConstraintLayout>
