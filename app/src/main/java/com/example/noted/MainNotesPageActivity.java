@@ -98,6 +98,50 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                     }
                 }
 
+                // making listView elements clickable.
+                allNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView <? > arg0, View view, int position, long id) {
+                        // when clicked, a new activity should start of the individual note.
+                        String note = ((TextView) view).getText().toString();
+                        Intent go_to_ind_note = new Intent(MainNotesPageActivity.this, IndividualNotePage.class);
+                        go_to_ind_note.putExtra("noteContent", ((TextView) view).getText());
+
+
+                        ref.child(note).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if(data.getKey().equals("imageUri")){
+                                        String imgUrl = data.getValue().toString();
+                                        go_to_ind_note.putExtra("imageUri", imgUrl);
+                                    }
+                                    if(data.getKey().equals("latitude")){
+                                        double lat = (double) data.getValue();
+                                        String latStr = String.valueOf(lat);
+                                        go_to_ind_note.putExtra("latitude", latStr);
+                                    }
+                                    if(data.getKey().equals("longitude")){
+                                        double longitude = (double) data.getValue();
+                                        String longStr = String.valueOf(longitude);
+                                        go_to_ind_note.putExtra("longitude", longStr);
+                                    }
+                                    if(data.getKey().equals("timeAdded")){
+                                        String datetime = data.getValue().toString();
+                                        go_to_ind_note.putExtra("date_time", datetime);
+                                    }
+                                }
+                                startActivity(go_to_ind_note);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                });
+
                 // reversing the notes, getting latest first.
                 for (int i = 0; i < every_note.size() / 2; i++) {
                     String temp = every_note.get(i);
@@ -130,6 +174,51 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                         every_note.add(note);
                     }
                 }
+
+                // making listView elements clickable.
+                allNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView <? > arg0, View view, int position, long id) {
+                        // when clicked, a new activity should start of the individual note.
+                        String note = ((TextView) view).getText().toString();
+                        Intent go_to_ind_note = new Intent(MainNotesPageActivity.this, IndividualNotePage.class);
+                        go_to_ind_note.putExtra("noteContent", ((TextView) view).getText());
+
+
+                        ref.child(note).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if(data.getKey().equals("imageUri")){
+                                        String imgUrl = data.getValue().toString();
+                                        go_to_ind_note.putExtra("imageUri", imgUrl);
+                                    }
+                                    if(data.getKey().equals("latitude")){
+                                        double lat = (double) data.getValue();
+                                        String latStr = String.valueOf(lat);
+                                        go_to_ind_note.putExtra("latitude", latStr);
+                                    }
+                                    if(data.getKey().equals("longitude")){
+                                        double longitude = (double) data.getValue();
+                                        String longStr = String.valueOf(longitude);
+                                        go_to_ind_note.putExtra("longitude", longStr);
+                                    }
+                                    if(data.getKey().equals("timeAdded")){
+                                        String datetime = data.getValue().toString();
+                                        go_to_ind_note.putExtra("date_time", datetime);
+                                    }
+                                }
+                                startActivity(go_to_ind_note);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                });
+
                 // reversing the notes, getting latest first.
                 for (int i = 0; i < every_note.size() / 2; i++) {
                     String temp = every_note.get(i);
