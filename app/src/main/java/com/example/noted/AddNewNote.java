@@ -188,7 +188,7 @@ public class AddNewNote extends AppCompatActivity implements View.OnClickListene
                                 noteObj.setImageUri(imgUri);
 
                                 // saving note into the db.
-                                ref.child(currentTime).setValue(noteObj);
+                                ref.child(noteObj.getNote()).setValue(noteObj);
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(AddNewNote.this, "Note added :)", Toast.LENGTH_SHORT).show();
 

@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -29,7 +32,6 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
     private Button logout, all_notes_btn, todo_btn, reminder_btn;
     private FloatingActionButton add_note_btn;
     private ListView allNotesListView;
-//    private ArrayList<IndNote> all_notes;
     private FirebaseAuth mAuth;
 
     @Override
@@ -39,6 +41,7 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         setTitle("All notes.");
 
         allNotesListView = findViewById(R.id.allNotesListView);
+        allNotesListView.setClickable(true);
 
         logout = (Button) findViewById(R.id.logout_btn);
         all_notes_btn = (Button) findViewById(R.id.all_notes_btn);
@@ -52,9 +55,6 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         todo_btn.setOnClickListener(this);
         all_notes_btn.setOnClickListener(this);
         reminder_btn.setOnClickListener(this);
-
-        // working on printing all the notes on screen from FirebaseDatabase.
-
 
         mAuth = FirebaseAuth.getInstance();
         view_all_notes();
@@ -97,6 +97,13 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                         every_note.add(note);
                     }
                 }
+
+                // reversing the notes, getting latest first.
+                for (int i = 0; i < every_note.size() / 2; i++) {
+                    String temp = every_note.get(i);
+                    every_note.set(i, every_note.get(every_note.size() - i - 1));
+                    every_note.set(every_note.size() - i - 1, temp);
+                }
                 final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
                 allNotesListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -123,6 +130,12 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                         every_note.add(note);
                     }
                 }
+                // reversing the notes, getting latest first.
+                for (int i = 0; i < every_note.size() / 2; i++) {
+                    String temp = every_note.get(i);
+                    every_note.set(i, every_note.get(every_note.size() - i - 1));
+                    every_note.set(every_note.size() - i - 1, temp);
+                }
                 final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
                 allNotesListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -146,6 +159,42 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                 for(DataSnapshot row : snapshot.getChildren()) {
                     every_note.add(row.child("note").getValue().toString());
                 }
+                // reversing the notes, getting latest first.
+                for (int i = 0; i < every_note.size() / 2; i++) {
+                    String temp = every_note.get(i);
+                    every_note.set(i, every_note.get(every_note.size() - i - 1));
+                    every_note.set(every_note.size() - i - 1, temp);
+                }
+
+                // making listView elements clickable.
+                allNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView <? > arg0, View view, int position, long id) {
+                        // when clicked, a new activity should start of the individual note.
+                        String note = ((TextView) view).getText().toString();
+                        Intent go_to_ind_note = new Intent(MainNotesPageActivity.this, IndividualNotePage.class);
+                        go_to_ind_note.putExtra("noteContent", ((TextView) view).getText());
+
+
+                        ref.child(note).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if(data.getKey().equals("imageUri")){
+                                        String imgUrl = data.getValue().toString();
+                                        go_to_ind_note.putExtra("imageUri", imgUrl);
+                                        startActivity(go_to_ind_note);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                });
                 final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
                 allNotesListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
