@@ -89,7 +89,7 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
                                 String note = ((TextView) view).getText().toString();
                                 Intent go_to_ind_note = new Intent(MainNotesPageActivity.this, IndividualNotePage.class);
                                 go_to_ind_note.putExtra("noteContent", ((TextView) view).getText());
-
+                                Toast.makeText(MainNotesPageActivity.this, note, Toast.LENGTH_SHORT).show();
 
                                 ref.child(note).addValueEventListener(new ValueEventListener() {
                                     @Override

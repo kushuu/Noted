@@ -100,8 +100,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     if(task.isSuccessful()) {
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(SignUpActivity.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
-
-                                        // redirect to the login page/main page.
+                                        FirebaseAuth.getInstance().signOut();
                                         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                         finish();
                                     }
