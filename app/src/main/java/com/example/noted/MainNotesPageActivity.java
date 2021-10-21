@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,9 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
     private FloatingActionButton add_note_btn;
     private ListView allNotesListView;
     private FirebaseAuth mAuth;
+    private DatabaseReference ref;
+    private SearchView searchbar;
+    private ArrayList<String> every_note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,9 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         todo_btn = (Button) findViewById(R.id.to_do_btn);
         reminder_btn = (Button) findViewById(R.id.reminder_btn);
 
+        searchbar = findViewById(R.id.searchView);
+        searchbar_functionality();
+
         add_note_btn = (FloatingActionButton) findViewById(R.id.add_new_note_btn);
 
         logout.setOnClickListener(this);
@@ -59,7 +66,92 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
         mAuth = FirebaseAuth.getInstance();
         view_all_notes();
     }
-    
+
+    private void searchbar_functionality() {
+        searchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                // looking for a note with note_content as "s".
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        every_note = new ArrayList<>();
+                        for(DataSnapshot row : snapshot.getChildren()) {
+                            String note = row.child("note").getValue().toString();
+                            if(note.contains(s)) {
+                                every_note.add(note);
+                            }
+                        }
+                        allNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            public void onItemClick(AdapterView <? > arg0, View view, int position, long id) {
+                                // when clicked, a new activity should start of the individual note.
+                                String note = ((TextView) view).getText().toString();
+                                Intent go_to_ind_note = new Intent(MainNotesPageActivity.this, IndividualNotePage.class);
+                                go_to_ind_note.putExtra("noteContent", ((TextView) view).getText());
+
+
+                                ref.child(note).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot data : snapshot.getChildren()) {
+                                            if(data.getKey().equals("imageUri")){
+                                                String imgUrl = data.getValue().toString();
+                                                go_to_ind_note.putExtra("imageUri", imgUrl);
+                                            }
+                                            if(data.getKey().equals("latitude")){
+                                                double lat = (double) data.getValue();
+                                                String latStr = String.valueOf(lat);
+                                                go_to_ind_note.putExtra("latitude", latStr);
+                                            }
+                                            if(data.getKey().equals("longitude")){
+                                                double longitude = (double) data.getValue();
+                                                String longStr = String.valueOf(longitude);
+                                                go_to_ind_note.putExtra("longitude", longStr);
+                                            }
+                                            if(data.getKey().equals("timeAdded")){
+                                                String datetime = data.getValue().toString();
+                                                go_to_ind_note.putExtra("date_time", datetime);
+                                            }
+                                        }
+                                        startActivity(go_to_ind_note);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                            }
+                        });
+
+                        // reversing the notes, getting latest first.
+                        for (int i = 0; i < every_note.size() / 2; i++) {
+                            String temp = every_note.get(i);
+                            every_note.set(i, every_note.get(every_note.size() - i - 1));
+                            every_note.set(every_note.size() - i - 1, temp);
+                        }
+                        final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, every_note);
+                        allNotesListView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
@@ -239,12 +331,12 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
 
     private void view_all_notes() {
         String userId = mAuth.getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
+        ref = FirebaseDatabase.getInstance().getReference("users").child(userId).child("Notes");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final ArrayList<String> every_note = new ArrayList<>();
+                every_note = new ArrayList<>();
                 for(DataSnapshot row : snapshot.getChildren()) {
                     every_note.add(row.child("note").getValue().toString());
                 }
@@ -309,5 +401,6 @@ public class MainNotesPageActivity extends AppCompatActivity implements View.OnC
 
             }
         });
+
     }
 }

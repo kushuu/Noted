@@ -42,7 +42,6 @@ public class IndividualNotePage extends AppCompatActivity {
         latText.setText("Latitude: " + latitude);
         lonText.setText("Longitude: " + longitude);
         dtText.setText("Date added: " + date_time);
-        Toast.makeText(IndividualNotePage.this, latitude, Toast.LENGTH_SHORT).show();
 
         // working with image.
         String uri = receive_data.getStringExtra("imageUri");
