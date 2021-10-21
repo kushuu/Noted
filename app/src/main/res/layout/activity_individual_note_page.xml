@@ -20,58 +20,10 @@
         app:srcCompat="@drawable/edit_text_border" />
 
     <TextView
-        android:background="@drawable/edit_text_border"
-        android:id="@+id/note_latitude"
-        android:layout_width="345dp"
-        android:layout_height="39dp"
-        android:paddingTop="7dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_img"
-        app:layout_constraintVertical_bias="0.377" />
-
-    <TextView
-        android:background="@drawable/edit_text_border"
-        android:id="@+id/note_text"
-        android:layout_width="345dp"
-        android:layout_height="39dp"
-        android:paddingTop="7dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_img"
-        app:layout_constraintVertical_bias="0.233" />
-
-    <TextView
-        android:background="@drawable/edit_text_border"
-        android:id="@+id/note_longitude"
-        android:layout_width="345dp"
-        android:layout_height="39dp"
-        android:paddingTop="7dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_img"
-        app:layout_constraintVertical_bias="0.521" />
-
-    <TextView
-        android:background="@drawable/edit_text_border"
         android:id="@+id/note_datetime"
         android:layout_width="345dp"
         android:layout_height="39dp"
+        android:background="@drawable/edit_text_border"
         android:paddingTop="7dp"
         android:text="TextView"
         android:textAlignment="center"
@@ -81,5 +33,68 @@
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_img"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.585" />
+
+    <TextView
+        android:id="@+id/note_latitude"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:background="@drawable/edit_text_border"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.295" />
+
+    <TextView
+        android:id="@+id/note_text"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:background="@drawable/edit_text_border"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.152" />
+
+    <TextView
+        android:id="@+id/note_longitude"
+        android:layout_width="345dp"
+        android:layout_height="39dp"
+        android:background="@drawable/edit_text_border"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_img"
+        app:layout_constraintVertical_bias="0.439" />
+
+    <Button
+        android:id="@+id/delete_note"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_datetime"
+
+        android:backgroundTint="@color/lgt_red"
+        android:textColor="@color/black"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
